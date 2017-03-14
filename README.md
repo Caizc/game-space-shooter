@@ -1,5 +1,7 @@
 # game-space-shooter
 
-A simple top down arcade style shooter game, made by following the Unity Learn tutorial.
+A simple top-down arcade style shooter game, made by following the Unity Learn tutorial.
 
-![](media/14890724035770.png)
+[Space Shooter tutorial - Unity-Learn-Tutorials](https://unity3d.com/cn/learn/tutorials/projects/space-shooter-tutorial)
+
+![](media/20170312-001.png)
