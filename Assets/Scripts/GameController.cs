@@ -3,28 +3,21 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
+/// <summary>
+/// 游戏控制器
+/// </summary>
 public class GameController : MonoBehaviour
 {
+    [SerializeField] private GameObject[] hazards;
+    [SerializeField] private Vector3 spawnValues;
+    [SerializeField] private int hazardCount;
+    [SerializeField] private float spawnWait;
+    [SerializeField] private float waveWait;
+    [SerializeField] private float startWait;
 
-    [SerializeField]
-    private GameObject[] hazards;
-    [SerializeField]
-    private Vector3 spawnValues;
-    [SerializeField]
-    private int hazardCount;
-    [SerializeField]
-    private float spawnWait;
-    [SerializeField]
-    private float waveWait;
-    [SerializeField]
-    private float startWait;
-
-    [SerializeField]
-    private Text scoreText;
-    [SerializeField]
-    private Text gameOverText;
-    [SerializeField]
-    private Text restartText;
+    [SerializeField] private Text scoreText;
+    [SerializeField] private Text gameOverText;
+    [SerializeField] private Text restartText;
 
     private bool _isGameOver;
     private bool _isRestart;
@@ -63,7 +56,8 @@ public class GameController : MonoBehaviour
         {
             for (int i = 0; i < hazardCount; i++)
             {
-                Vector3 spawnPosition = new Vector3(Random.Range(-spawnValues.x, spawnValues.x), spawnValues.y, spawnValues.z);
+                Vector3 spawnPosition = new Vector3(Random.Range(-spawnValues.x, spawnValues.x), spawnValues.y,
+                    spawnValues.z);
                 Quaternion spawnRotation = Quaternion.identity;
                 GameObject hazard = hazards[Random.Range(0, hazards.Length)];
 
