@@ -41,10 +41,18 @@ public class GameController : MonoBehaviour
     {
         if (_isRestart)
         {
+#if UNITY_EDITOR
             if (Input.GetKeyDown(KeyCode.R))
             {
                 SceneManager.LoadScene("Main");
             }
+#endif
+#if UNITY_ANDROID || UNITY_IOS
+            if (Input.touchCount != 0)
+            {
+                SceneManager.LoadScene("Main");
+            }
+#endif
         }
     }
 
@@ -70,7 +78,12 @@ public class GameController : MonoBehaviour
 
             if (_isGameOver)
             {
+#if UNITY_EDITOR
                 restartText.text = "Press 'R' to Restart";
+#endif
+#if UNITY_ANDROID || UNITY_IOS
+                restartText.text = "Touch Screen to Restart";
+#endif
                 restartText.enabled = true;
                 _isRestart = true;
                 break;
