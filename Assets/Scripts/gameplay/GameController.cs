@@ -25,6 +25,8 @@ public class GameController : MonoBehaviour
 
     void Start()
     {
+        DontDestroyOnLoad(this);
+
         _isGameOver = false;
         _isRestart = false;
         gameOverText.enabled = false;
@@ -41,16 +43,17 @@ public class GameController : MonoBehaviour
     {
         if (_isRestart)
         {
-#if UNITY_EDITOR
+            // TODO: 这里可不能重新加载场景，要改为还原现场，或者说重置所有对象的状态
+
             if (Input.GetKeyDown(KeyCode.R))
             {
-                SceneManager.LoadScene("Main");
+                SceneManager.LoadScene("Online");
             }
-#endif
+
 #if UNITY_ANDROID || UNITY_IOS
             if (Input.touchCount != 0)
             {
-                SceneManager.LoadScene("Main");
+                SceneManager.LoadScene("Online");
             }
 #endif
         }

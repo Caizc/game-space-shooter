@@ -171,12 +171,15 @@ public class Connection
         return Send(protocol, cbName, cb);
     }
 
-
+    /// <summary>
+    /// 每个逻辑帧处理消息分发和向服务端发送心跳消息
+    /// </summary>
     public void Update()
     {
-        //消息
+        // 消息分发
         msgDist.Update();
-        //心跳
+
+        // 心跳
         if (status == Status.Connected)
         {
             if (Time.time - lastTickTime > heartBeatTime)

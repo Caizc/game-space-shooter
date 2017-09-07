@@ -22,7 +22,9 @@ public class MsgDistribution
 
     private Dictionary<string, Delegate> onceDict = new Dictionary<string, Delegate>();
 
-    //Update
+    /// <summary>
+    /// 每一逻辑帧处理消息分发
+    /// </summary>
     public void Update()
     {
         for (int i = 0; i < num; i++)
@@ -43,7 +45,10 @@ public class MsgDistribution
         }
     }
 
-    // 消息分发
+    /// <summary>
+    /// 向各监听者分发消息
+    /// </summary>
+    /// <param name="protocol"></param>
     public void DispatchMsgEvent(ProtocolBase protocol)
     {
         string name = protocol.GetName();

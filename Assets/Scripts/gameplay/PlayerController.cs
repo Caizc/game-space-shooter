@@ -1,23 +1,32 @@
 ﻿using UnityEngine;
 
+/// <summary>
+/// 地图边界
+/// </summary>
 [System.SerializableAttribute]
 public class Boundary
 {
     public float xMin, xMax, zMin, zMax;
 }
 
+/// <summary>
+/// 角色控制器
+/// </summary>
 public class PlayerController : MonoBehaviour
 {
+    // 移动速度
     [SerializeField] private float speed;
+    // 转向速度
     [SerializeField] private float rotateSpeed;
     [SerializeField] private Boundary boundary;
+    // 机身倾斜系数
     [SerializeField] private float tilt;
 
     [SerializeField] private GameObject shot;
     [SerializeField] private Transform shotSpawn;
     [SerializeField] private float fireDelta = 0.25f;
 
-   [SerializeField] private ParticleSystem particleSystem1;
+    [SerializeField] private ParticleSystem particleSystem1;
     [SerializeField] private ParticleSystem particleSystem2;
 
     private Rigidbody _rigidbody;
@@ -26,7 +35,9 @@ public class PlayerController : MonoBehaviour
     private float _myTime = 0.0f;
     private float _nextFire = 0.25f;
 
+    // 移动增量
     [HideInInspector] public Vector2 deltaMovement;
+    // 转向增量
     [HideInInspector] public Vector2 deltaRotation;
 
     public enum InputForcedMode
@@ -69,12 +80,14 @@ public class PlayerController : MonoBehaviour
         Vector3 movement = new Vector3(moveHorizontal, 0.0f, moveVertical);
         _rigidbody.velocity = movement * speed;
 
+        // 限制角色移动范围
         _rigidbody.position = new Vector3(
             Mathf.Clamp(_rigidbody.position.x, boundary.xMin, boundary.xMax),
             0.0f,
             Mathf.Clamp(_rigidbody.position.z, boundary.zMin, boundary.zMax)
         );
 
+        // 左右平移时稍微倾斜一下机身（绕 z 轴）
         _rigidbody.rotation = Quaternion.Euler(0.0f, 0.0f, _rigidbody.velocity.x * -tilt);
 
         // 旋转方向
