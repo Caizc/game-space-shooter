@@ -16,9 +16,12 @@ public class PlayerController : MonoBehaviour
 {
     // 移动速度
     [SerializeField] private float speed;
+
     // 转向速度
     [SerializeField] private float rotateSpeed;
+
     [SerializeField] private Boundary boundary;
+
     // 机身倾斜系数
     [SerializeField] private float tilt;
 
@@ -37,9 +40,11 @@ public class PlayerController : MonoBehaviour
 
     // 移动增量
     [HideInInspector] public Vector2 deltaMovement;
+
     // 转向增量
     [HideInInspector] public Vector2 deltaRotation;
 
+    // 输入类型枚举（None: 无；Mobile: 移动设备；Desktop： 桌面设备）
     public enum InputForcedMode
     {
         None,
@@ -47,7 +52,20 @@ public class PlayerController : MonoBehaviour
         Desktop
     }
 
+    // 输入类型
     public InputForcedMode ForcedMode;
+
+    // 角色操控类型枚举（None: 无；Player: 玩家；AI: AI；Net: 网络玩家）
+    public enum CharacterControlMode
+    {
+        None,
+        Player,
+        AI,
+        Net
+    }
+
+    // 角色操控类型
+    [HideInInspector] public CharacterControlMode ControlMode;
 
     void Start()
     {
@@ -104,8 +122,14 @@ public class PlayerController : MonoBehaviour
 
         // 旋转粒子系统
         float r = transform.rotation.eulerAngles.y * Mathf.Deg2Rad;
-        particleSystem1.startRotation = r;
-        particleSystem2.startRotation = r;
+        if (null != particleSystem1)
+        {
+            particleSystem1.startRotation = r;
+        }
+        if (null != particleSystem2)
+        {
+            particleSystem2.startRotation = r;
+        }
     }
 
     private void Fire()

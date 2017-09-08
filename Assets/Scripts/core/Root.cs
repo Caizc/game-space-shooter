@@ -13,7 +13,7 @@ public class Root : MonoBehaviour
         // 打开登录面板
         PanelMgr.instance.OpenPanel<LoginPanel>("");
 
-        Debug.Log("Application has been started up!");
+        Debug.Log("=== Application has been started up! ===");
     }
 
     void FixedUpdate()

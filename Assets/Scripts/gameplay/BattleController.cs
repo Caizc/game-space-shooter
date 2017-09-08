@@ -4,11 +4,16 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 /// <summary>
-/// 游戏控制器
+/// 战斗控制器
 /// </summary>
-public class GameController : MonoBehaviour
+public class BattleController : MonoBehaviour
 {
+    // 角色 prefab 列表
+    public GameObject[] characterPrefabs;
+
+    // 敌人 prefab 列表
     [SerializeField] private GameObject[] hazards;
+
     [SerializeField] private Vector3 spawnValues;
     [SerializeField] private int hazardCount;
     [SerializeField] private float spawnWait;
@@ -36,7 +41,8 @@ public class GameController : MonoBehaviour
 
         UpdateScore();
 
-        StartCoroutine(SpawnWaves());
+        // 开始刷怪
+//        StartCoroutine(SpawnWaves());
     }
 
     void Update()
@@ -59,6 +65,10 @@ public class GameController : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 一波波地刷怪
+    /// </summary>
+    /// <returns></returns>
     private IEnumerator SpawnWaves()
     {
         yield return new WaitForSeconds(startWait);

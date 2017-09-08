@@ -10,14 +10,14 @@ public class Done_DestroyByContact : MonoBehaviour
 
 	void Start ()
 	{
-		GameObject gameControllerObject = GameObject.FindGameObjectWithTag ("GameController");
+		GameObject gameControllerObject = GameObject.FindGameObjectWithTag ("BattleController");
 		if (gameControllerObject != null)
 		{
 			gameController = gameControllerObject.GetComponent <Done_GameController>();
 		}
 		if (gameController == null)
 		{
-			Debug.Log ("Cannot find 'GameController' script");
+			Debug.Log ("Cannot find 'BattleController' script");
 		}
 	}
 

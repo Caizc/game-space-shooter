@@ -8,7 +8,8 @@ public class GameMgr : MonoBehaviour
 {
     public static GameMgr instance;
 
-    public string id = "Tank";
+    // 当前玩家 id
+    public string id = "_UnknowPlayerID_";
 
     void Awake()
     {

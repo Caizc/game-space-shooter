@@ -149,11 +149,20 @@ public class RoomPanel : PanelBase
         }
     }
 
-    // TODO: 这里开始战斗
+    /// <summary>
+    /// 接收到‘开始战斗’消息
+    /// </summary>
+    /// <param name="protocol"></param>
     public void RecvFight(ProtocolBase protocol)
     {
+        // TODO: 这里开始战斗
         ProtocolBytes proto = (ProtocolBytes)protocol;
+
+        // 开始太空战斗
+        SpaceBattle.Instance.StartBattle(proto);
+
 //        MultiBattle.instance.StartBattle(proto);
+
         Close();
     }
 

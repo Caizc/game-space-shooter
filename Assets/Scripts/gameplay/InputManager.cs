@@ -8,19 +8,85 @@ using MoreMountains.Tools;
 /// </summary>
 public class InputManager : MonoBehaviour
 {
-    [SerializeField] private PlayerController playerController;
+    // 移动增量
+    private Vector2 _deltaMovement;
 
-    public void LeftJoystickMovement(Vector2 movement)
+    // 转向增量
+    private Vector2 _deltaRotation;
+
+    // 玩家当前控制的角色
+    private PlayerController _player;
+
+    public PlayerController Player
     {
-//        MMDebug.DebugOnScreen("left joystick", movement);
+        get { return _player; }
 
-        playerController.deltaMovement = movement;
+        set { _player = value; }
     }
 
+    void FixedUpdate()
+    {
+        if (SpaceBattle.Instance.isBattleStart)
+        {
+            // 每一帧都将移动增量和转向增量数据发往 Server
+            SendShipInfoToServer();
+        }
+    }
+
+    /// <summary>
+    /// 处理左摇杆移动事件
+    /// </summary>
+    /// <param name="movement"></param>
+    public void LeftJoystickMovement(Vector2 movement)
+    {
+        //        MMDebug.DebugOnScreen("left joystick", movement);
+
+        //        _characterController.deltaMovement = movement;
+
+        if (SpaceBattle.Instance.isBattleStart)
+        {
+            _deltaMovement = movement;
+            _player.deltaMovement = movement;
+        }
+    }
+
+    /// <summary>
+    /// 处理右摇杆移动事件
+    /// </summary>
+    /// <param name="movement"></param>
     public void RightJoystickMovement(Vector2 movement)
     {
-//        MMDebug.DebugOnScreen("right joystick", movement);
+        //        MMDebug.DebugOnScreen("right joystick", movement);
 
-        playerController.deltaRotation = movement;
+        //        _characterController.deltaRotation = movement;
+
+        if (SpaceBattle.Instance.isBattleStart)
+        {
+            _deltaRotation = movement;
+            _player.deltaRotation = movement;
+        }
+    }
+
+    /// <summary>
+    /// 向 Server 发送飞船的位置和转向信息
+    /// </summary>
+    private void SendShipInfoToServer()
+    {
+        // 组装协议
+        ProtocolBytes proto = new ProtocolBytes();
+        proto.AddString("UpdateShipInfo");
+
+        // 位置
+        Vector2 mov = _deltaMovement;
+        // 旋转
+        Vector2 rot = _deltaRotation;
+
+        proto.AddFloat(mov.x);
+        proto.AddFloat(mov.y);
+        proto.AddFloat(rot.x);
+        proto.AddFloat(rot.y);
+
+        // 向 Server 发送消息
+        NetMgr.srvConn.Send(proto);
     }
 }

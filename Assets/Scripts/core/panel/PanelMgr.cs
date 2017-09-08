@@ -31,10 +31,13 @@ public class PanelMgr : MonoBehaviour
     // 初始化层
     private void InitLayer()
     {
-        // 画布
-        canvas = GameObject.Find("Canvas");
+        // UI 画布
+        canvas = GameObject.Find("UICanvas");
         if (canvas == null)
+        {
             Debug.LogError("panelMgr.InitLayer fail, canvas is null");
+        }
+
         // 各个层级
         layerDict = new Dictionary<PanelLayer, Transform>();
 

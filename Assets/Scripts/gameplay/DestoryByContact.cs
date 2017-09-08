@@ -10,19 +10,19 @@ public class DestoryByContact : MonoBehaviour
     [SerializeField]
     private int scoreValue;
 
-    private GameController _gameController;
+    private BattleController _battleController;
 
     void Start()
     {
-        GameObject gameControllerObject = GameObject.FindWithTag("GameController");
+        GameObject gameControllerObject = GameObject.FindWithTag("BattleController");
 
         if (null != gameControllerObject)
         {
-            _gameController = gameControllerObject.GetComponent<GameController>();
+            _battleController = gameControllerObject.GetComponent<BattleController>();
 
-            if (null == _gameController)
+            if (null == _battleController)
             {
-                Debug.Log("Cannot find 'GameController' script!");
+                Debug.Log("Cannot find 'BattleController' script!");
             }
         }
     }
@@ -43,10 +43,10 @@ public class DestoryByContact : MonoBehaviour
         {
             Instantiate(playerExplosion, other.transform.position, other.transform.rotation);
 
-            _gameController.GameOver();
+            _battleController.GameOver();
         }
 
-        _gameController.AddScore(scoreValue);
+        _battleController.AddScore(scoreValue);
 
         Destroy(other.gameObject);
         Destroy(this.gameObject);
