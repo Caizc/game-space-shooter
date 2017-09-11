@@ -83,7 +83,7 @@ public class SpaceBattle
     private void SpawnShip(string id, int team, int spid)
     {
         // 获取预设的出生点
-        Transform spawnPoints = GameObject.Find("SpwanPoints").transform;
+        Transform spawnPoints = GameObject.FindWithTag("SpwanPoints").transform;
         // 出生点坐标
         Transform spawnTrans;
 
