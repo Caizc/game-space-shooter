@@ -146,7 +146,7 @@ public class SpaceBattle
                 return;
             }
 
-            InputManager inputManager = battleControllerObject.GetComponent<InputManager>();
+            InputManager inputManager = inputManagerObject.GetComponent<InputManager>();
             inputManager.Player = ship.playerController;
         }
         else

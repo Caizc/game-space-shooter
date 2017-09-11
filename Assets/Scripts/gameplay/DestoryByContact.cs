@@ -2,13 +2,10 @@
 
 public class DestoryByContact : MonoBehaviour
 {
-    [SerializeField]
-    private GameObject explosion;
-    [SerializeField]
-    private GameObject playerExplosion;
+    [SerializeField] private GameObject explosion;
+    [SerializeField] private GameObject playerExplosion;
 
-    [SerializeField]
-    private int scoreValue;
+    [SerializeField] private int scoreValue;
 
     private BattleController _battleController;
 
@@ -39,10 +36,13 @@ public class DestoryByContact : MonoBehaviour
             Instantiate(explosion, transform.position, transform.rotation);
         }
 
-        if (other.CompareTag("Player"))
+        if (null != playerExplosion)
         {
             Instantiate(playerExplosion, other.transform.position, other.transform.rotation);
+        }
 
+        if (other.CompareTag("Player"))
+        {
             _battleController.GameOver();
         }
 
