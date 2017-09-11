@@ -66,7 +66,7 @@ public class SpaceBattle
         }
 
         // 向消息分发管理器注册相应事件的回调方法
-        NetMgr.srvConn.msgDist.AddListener("UpdateShipInfo", RecvUpdateShipInfo);
+        NetMgr.srvConn.msgDist.AddListener(Constant.UpdateShipInfo, RecvUpdateShipInfo);
 //        NetMgr.srvConn.msgDist.AddListener("Shooting", RecvShooting);
 //        NetMgr.srvConn.msgDist.AddListener("Hit", RecvHit);
 //        NetMgr.srvConn.msgDist.AddListener("Result", RecvResult);
@@ -168,10 +168,10 @@ public class SpaceBattle
         string id = proto.GetString(start, ref start);
 
         // 如果该位置同步消息包是自己发出的，则忽略，不进行位置和转向同步，避免被拉回到之前的位置上
-        if (id == GameMgr.instance.id)
-        {
-            return;
-        }
+//        if (id == GameMgr.instance.id)
+//        {
+//            return;
+//        }
 
         Vector2 mov;
         Vector2 rot;

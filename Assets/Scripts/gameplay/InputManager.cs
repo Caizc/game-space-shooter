@@ -41,12 +41,10 @@ public class InputManager : MonoBehaviour
     {
         //        MMDebug.DebugOnScreen("left joystick", movement);
 
-        //        _characterController.deltaMovement = movement;
-
         if (SpaceBattle.Instance.isBattleStart)
         {
             _deltaMovement = movement;
-            _player.deltaMovement = movement;
+//            _player.deltaMovement = movement;
         }
     }
 
@@ -58,12 +56,10 @@ public class InputManager : MonoBehaviour
     {
         //        MMDebug.DebugOnScreen("right joystick", movement);
 
-        //        _characterController.deltaRotation = movement;
-
         if (SpaceBattle.Instance.isBattleStart)
         {
             _deltaRotation = movement;
-            _player.deltaRotation = movement;
+//            _player.deltaRotation = movement;
         }
     }
 
@@ -74,7 +70,7 @@ public class InputManager : MonoBehaviour
     {
         // 组装协议
         ProtocolBytes proto = new ProtocolBytes();
-        proto.AddString("UpdateShipInfo");
+        proto.AddString(Constant.UpdateShipInfo);
 
         // 位置
         Vector2 mov = _deltaMovement;

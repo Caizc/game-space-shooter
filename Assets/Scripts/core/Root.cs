@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 /// <summary>
-/// 挂载到场景中的程序入口脚本
+/// 挂载到场景中的游戏入口脚本
 /// </summary>
 public class Root : MonoBehaviour
 {
@@ -13,7 +13,7 @@ public class Root : MonoBehaviour
         // 打开登录面板
         PanelMgr.instance.OpenPanel<LoginPanel>("");
 
-        Debug.Log("=== Application has been started up! ===");
+        Debug.Log("=== Game has been started up! ===");
     }
 
     void FixedUpdate()

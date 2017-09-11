@@ -21,7 +21,7 @@ public class NetMgr
     {
         //具体的发送内容根据服务端设定改动
         ProtocolBytes protocol = new ProtocolBytes();
-        protocol.AddString("HeatBeat");
+        protocol.AddString(Constant.HeatBeat);
 
         return protocol;
     }
