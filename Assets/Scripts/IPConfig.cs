@@ -11,7 +11,8 @@ public static class IPConfig
 
 //    public static string IP = "127.0.0.1";
 //    public static string IP = "192.168.1.111";
-    public static string IP = "192.168.1.102";
+//    public static string IP = "192.168.1.102";
+    public static string IP = "192.168.1.186";
 
     public static int Port = 1234;
 }
