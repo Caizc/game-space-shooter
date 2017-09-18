@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Path
+public class TankPath
 {
     //所有路点
     public Vector3[] waypoints;
@@ -54,7 +54,7 @@ public class Path
 		{
 			waypoints = null;
 			index = -1;
-			Debug.LogWarning("Path.InitByObj length == 0");
+			Debug.LogWarning("TankPath.InitByObj length == 0");
 			return;
 		}
 		//遍历子物体生成路点

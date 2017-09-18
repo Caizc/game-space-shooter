@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
@@ -21,11 +22,19 @@ public class SpaceBattle
         }
     }
 
+    // 房间中的所有玩家 ID 列表
+    public Dictionary<int, string> PlayerDict = new Dictionary<int, string>();
+
     // 场景中的所有飞船
     public Dictionary<string, Ship> ShipDict = new Dictionary<string, Ship>();
 
     // 战斗是否开始
     public bool isBattleStart = false;
+
+    // TODO: 接收到 Server 发送数据的事件回调。这里跟底层消息分发的事件回调机制有所重复，应该可以再精简去掉一次回调
+    public delegate void EventCallback(byte eventCode, object content, int senderId);
+
+    public static EventCallback OnEventCall;
 
     /// <summary>
     /// 私有构造方法，防止单例模式下产生多个类的实例
@@ -62,14 +71,19 @@ public class SpaceBattle
             int spid = proto.GetInt(start, ref start);
 
             // 产生飞船
-            SpawnShip(id, team, spid);
+            // SpawnShip(id, team, spid);
+
+            // 登记到房间用户列表中
+            PlayerDict.Add(i, id);
         }
 
-        // 向消息分发管理器注册相应事件的回调方法
-        NetMgr.srvConn.msgDist.AddListener(Constant.UpdateShipInfo, RecvUpdateShipInfo);
 //        NetMgr.srvConn.msgDist.AddListener("Shooting", RecvShooting);
 //        NetMgr.srvConn.msgDist.AddListener("Hit", RecvHit);
 //        NetMgr.srvConn.msgDist.AddListener("Result", RecvResult);
+
+        // TODO: 向消息分发管理器注册相应事件的回调方法
+//        NetMgr.srvConn.msgDist.AddListener(Constant.UpdateShipInfo, RecvUpdateShipInfo);
+        NetMgr.srvConn.msgDist.AddListener("TrueSyncData", RecvTrueSyncData);
 
         isBattleStart = true;
     }
@@ -134,31 +148,30 @@ public class SpaceBattle
         ShipDict.Add(id, ship);
 
         // 角色操控处理
-        if (id == GameMgr.instance.id)
-        {
-            ship.playerController.ControlMode = PlayerController.CharacterControlMode.Player;
-
-            // 设置摇杆操作控制的角色
-            GameObject inputManagerObject = GameObject.FindWithTag("InputManager");
-            if (inputManagerObject == null)
-            {
-                Debug.LogError("场景中缺失 InputManager 对象！");
-                return;
-            }
-
-            InputManager inputManager = inputManagerObject.GetComponent<InputManager>();
-            inputManager.Player = ship.playerController;
-        }
-        else
-        {
-            ship.playerController.ControlMode = PlayerController.CharacterControlMode.Net;
-        }
+//        if (id == GameMgr.instance.id)
+//        {
+//            ship.playerController.ControlMode = PlayerController.CharacterControlMode.Player;
+//
+//            // 设置摇杆操作控制的角色
+//            GameObject inputManagerObject = GameObject.FindWithTag("InputManager");
+//            if (inputManagerObject == null)
+//            {
+//                Debug.LogError("场景中缺失 InputManager 对象！");
+//                return;
+//            }
+//
+//            InputManager inputManager = inputManagerObject.GetComponent<InputManager>();
+//            inputManager.Player = ship.playerController;
+//        }
+//        else
+//        {
+//            ship.playerController.ControlMode = PlayerController.CharacterControlMode.Net;
+//        }
     }
 
     /// <summary>
     /// 处理接收到的单位同步信息
     /// </summary>
-    /// <param name="protocol"></param>
     private void RecvUpdateShipInfo(ProtocolBase protocol)
     {
         // 解析协议
@@ -194,5 +207,14 @@ public class SpaceBattle
         Ship ship = ShipDict[id];
         ship.playerController.deltaMovement = mov;
         ship.playerController.deltaRotation = rot;
+    }
+
+    /// <summary>
+    /// 处理接收到的 TrueSync 消息
+    /// </summary>
+    private void RecvTrueSyncData(ProtocolBase protoBase)
+    {
+        // TODO: 事件编码和发送玩家 ID 暂时写死（协议内容中可以解析到每个指令的玩家 ID）
+        OnEventCall(199, protoBase, -1);
     }
 }

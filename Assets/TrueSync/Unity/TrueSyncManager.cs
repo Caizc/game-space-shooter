@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using System.Reflection;
 
 namespace TrueSync {
     /**
@@ -221,10 +220,19 @@ namespace TrueSync {
             Application.runInBackground = true;
 
             ICommunicator communicator = null;
-            if (!PhotonNetwork.connected || !PhotonNetwork.inRoom) {
-                Debug.LogWarning("You are not connected to Photon. TrueSync will start in offline mode.");
-            } else {
-                communicator = new PhotonTrueSyncCommunicator(PhotonNetwork.networkingPeer);
+//            if (!PhotonNetwork.connected || !PhotonNetwork.inRoom) {
+//                Debug.LogWarning("You are not connected to Photon. TrueSync will start in offline mode.");
+//            } else {
+//                communicator = new PhotonTrueSyncCommunicator(PhotonNetwork.networkingPeer);
+//            }
+
+            if (NetMgr.srvConn.status == Connection.Status.None)
+            {
+                Debug.LogWarning("You are not connected to Server. TrueSync will start in offline mode.");
+            }
+            else
+            {
+                communicator = new RealSyncCommunicator();
             }
 
             TrueSyncConfig activeConfig = ActiveConfig;
@@ -269,12 +277,17 @@ namespace TrueSync {
                 if (communicator == null) {
                     lockstep.AddPlayer(0, "Local_Player", true);
                 } else {
-                    List<PhotonPlayer> players = new List<PhotonPlayer>(PhotonNetwork.playerList);
-                    players.Sort(UnityUtils.playerComparer);
+//                    List<PhotonPlayer> players = new List<PhotonPlayer>(PhotonNetwork.playerList);
+//                    players.Sort(UnityUtils.playerComparer);
+//
+//                    for (int index = 0, length = players.Count; index < length; index++) {
+//                        PhotonPlayer p = players[index];
+//                        lockstep.AddPlayer((byte) p.ID, p.NickName, p.IsLocal);
+//                    }
 
-                    for (int index = 0, length = players.Count; index < length; index++) {
-                        PhotonPlayer p = players[index];
-                        lockstep.AddPlayer((byte) p.ID, p.NickName, p.IsLocal);
+                    foreach (var player in SpaceBattle.Instance.PlayerDict)
+                    {
+                        lockstep.AddPlayer((byte) player.Key, player.Value, player.Value == GameMgr.instance.id);
                     }
                 }
             }

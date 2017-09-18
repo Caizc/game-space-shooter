@@ -31,9 +31,9 @@ public class AI : MonoBehaviour
 
         TargetUpdate();
         //行走
-        if (path.IsReach(transform))
+        if (_tankPath.IsReach(transform))
         {
-            path.NextWaypoint();
+            _tankPath.NextWaypoint();
         }
 
         if (status == Status.Patrol)
@@ -56,7 +56,7 @@ public class AI : MonoBehaviour
     void AttackStart()
     {
         Vector3 targetPos = target.transform.position;
-        path.InitByNavMeshPath(transform.position, targetPos);
+        _tankPath.InitByNavMeshPath(transform.position, targetPos);
     }
 
 
@@ -72,7 +72,7 @@ public class AI : MonoBehaviour
             return;
         lastUpdateWaypointTime = Time.time;
 
-        if (path.waypoints == null || path.isFinish)
+        if (_tankPath.waypoints == null || _tankPath.isFinish)
         {
             GameObject obj = GameObject.Find("WaypointContainer");
             {
@@ -80,7 +80,7 @@ public class AI : MonoBehaviour
                 if (count == 0) return;
                 int index = Random.Range(0, count);
                 Vector3 targetPos = obj.transform.GetChild(index).position;
-                path.InitByNavMeshPath(transform.position, targetPos);
+                _tankPath.InitByNavMeshPath(transform.position, targetPos);
             }
         }
     }
@@ -98,7 +98,7 @@ public class AI : MonoBehaviour
         lastUpdateWaypointTime = Time.time;
 
         Vector3 targetPos = target.transform.position;
-        path.InitByNavMeshPath(transform.position, targetPos);
+        _tankPath.InitByNavMeshPath(transform.position, targetPos);
     }
 
     void Start()
@@ -108,7 +108,7 @@ public class AI : MonoBehaviour
 
     void OnDrawGizmos()
     {
-        path.DrawWaypoints();
+        _tankPath.DrawWaypoints();
     }
 
     //----------------搜寻目标----------------------
@@ -243,7 +243,7 @@ public class AI : MonoBehaviour
     //----------------行走状态机----------------------
 
     //路径
-    private Path path = new Path();
+    private TankPath _tankPath = new TankPath();
     //上次更新路径时间
     private float lastUpdateWaypointTime = float.MinValue;
     //更新路径cd
@@ -257,7 +257,7 @@ public class AI : MonoBehaviour
         if (obj && obj.transform.GetChild(0) != null)
         {
             Vector3 targetPos = obj.transform.GetChild(0).position;
-            path.InitByNavMeshPath(transform.position, targetPos);
+            _tankPath.InitByNavMeshPath(transform.position, targetPos);
         }
     }
 
@@ -267,10 +267,10 @@ public class AI : MonoBehaviour
         if (tank == null)
             return 0;
 
-        Vector3 itp = transform.InverseTransformPoint(path.waypoint);
-        if (itp.x > path.deviation / 5)
+        Vector3 itp = transform.InverseTransformPoint(_tankPath.waypoint);
+        if (itp.x > _tankPath.deviation / 5)
             return tank.maxSteeringAngle;
-        else if (itp.x < -path.deviation / 5)
+        else if (itp.x < -_tankPath.deviation / 5)
             return -tank.maxSteeringAngle;
         else
             return 0;
@@ -283,7 +283,7 @@ public class AI : MonoBehaviour
         if (tank == null)
             return 0;
 
-        Vector3 itp = transform.InverseTransformPoint(path.waypoint);
+        Vector3 itp = transform.InverseTransformPoint(_tankPath.waypoint);
         float x = itp.x;
         float z = itp.z;
         float r = 6;
@@ -297,7 +297,7 @@ public class AI : MonoBehaviour
     //获取刹车
     public float GetBrakeTorque()
     {
-        if (path.isFinish)
+        if (_tankPath.isFinish)
             return tank.maxMotorTorque;
         else
             return 0;

@@ -44,6 +44,57 @@ public class ProtocolBytes : ProtocolBase
         return str;
     }
 
+    /// <summary>
+    /// 添加字节数组
+    /// </summary>
+    public void AddBytes(byte[] byteArray)
+    {
+        Int32 len = byteArray.Length;
+        byte[] lenBytes = BitConverter.GetBytes(len);
+
+        if (bytes == null)
+        {
+            bytes = lenBytes.Concat(byteArray).ToArray();
+        }
+        else
+        {
+            bytes = bytes.Concat(lenBytes).Concat(byteArray).ToArray();
+        }
+    }
+
+    /// <summary>
+    /// 从字节数组的 start 处开始读取字节数组
+    /// </summary>
+    public byte[] GetBytes(int start, ref int end)
+    {
+        if (bytes == null)
+        {
+            return null;
+        }
+
+        if (bytes.Length < start + sizeof(Int32))
+        {
+            return null;
+        }
+
+        Int32 bytesLen = BitConverter.ToInt32(bytes, start);
+        if (bytes.Length < start + sizeof(Int32) + bytesLen)
+        {
+            return null;
+        }
+
+        byte[] byteArray = null;
+
+        // TODO: 这两种从字节数组中获取部分字节数组的方式，哪种更高效一些呢？
+        // way 1:
+        // byteArray = bytes.Skip(start + sizeof(Int32)).Take(bytesLen).ToArray();
+        // way 2:
+        Array.Copy(bytes, start + sizeof(Int32), byteArray, 0, bytesLen);
+
+        end = start + sizeof(Int32) + bytesLen;
+        return byteArray;
+    }
+
     // 添加字符串
     public void AddString(string str)
     {
@@ -56,7 +107,7 @@ public class ProtocolBytes : ProtocolBase
             bytes = bytes.Concat(lenBytes).Concat(strBytes).ToArray();
     }
 
-    // 从字节数组的start处开始读取字符串
+    // 从字节数组的 start 处开始读取字符串
     public string GetString(int start, ref int end)
     {
         if (bytes == null)

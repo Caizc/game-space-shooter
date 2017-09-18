@@ -12,18 +12,18 @@ namespace TrueSync {
         /**
          *  @brief Comparer class to guarantee PhotonPlayer order.
          **/
-        public class PlayerComparer : Comparer<PhotonPlayer> {
-
-            public override int Compare(PhotonPlayer x, PhotonPlayer y) {
-                return x.ID - y.ID;
-            }
-
-        }
+//        public class PlayerComparer : Comparer<PhotonPlayer> {
+//
+//            public override int Compare(PhotonPlayer x, PhotonPlayer y) {
+//                return x.ID - y.ID;
+//            }
+//
+//        }
 
         /**
          *  @brief Instance of a {@link PlayerComparer}.
          **/
-        public static PlayerComparer playerComparer = new PlayerComparer();
+//        public static PlayerComparer playerComparer = new PlayerComparer();
 
         /**
          *  @brief Comparer class to guarantee {@link TSCollider} order.

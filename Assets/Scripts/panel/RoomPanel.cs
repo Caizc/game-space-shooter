@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 
@@ -11,6 +12,7 @@ public class RoomPanel : PanelBase
     private Button startBtn;
 
     #region 生命周期
+
     /// <summary> 初始化 </summary>
     public override void Init(params object[] args)
     {
@@ -42,23 +44,19 @@ public class RoomPanel : PanelBase
         ProtocolBytes protocol = new ProtocolBytes();
         protocol.AddString("GetRoomInfo");
         NetMgr.srvConn.Send(protocol);
-
-
     }
 
     public override void OnClosing()
     {
-
         NetMgr.srvConn.msgDist.DelListener("GetRoomInfo", RecvGetRoomInfo);
         NetMgr.srvConn.msgDist.DelListener("Fight", RecvFight);
-
     }
 
 
     public void RecvGetRoomInfo(ProtocolBase protocol)
     {
         //获取总数
-        ProtocolBytes proto = (ProtocolBytes)protocol;
+        ProtocolBytes proto = (ProtocolBytes) protocol;
         int start = 0;
         string protoName = proto.GetString(start, ref start);
         int count = proto.GetInt(start, ref start);
@@ -110,7 +108,7 @@ public class RoomPanel : PanelBase
     public void OnCloseBack(ProtocolBase protocol)
     {
         //获取数值
-        ProtocolBytes proto = (ProtocolBytes)protocol;
+        ProtocolBytes proto = (ProtocolBytes) protocol;
         int start = 0;
         string protoName = proto.GetString(start, ref start);
         int ret = proto.GetInt(start, ref start);
@@ -138,7 +136,7 @@ public class RoomPanel : PanelBase
     public void OnStartBack(ProtocolBase protocol)
     {
         //获取数值
-        ProtocolBytes proto = (ProtocolBytes)protocol;
+        ProtocolBytes proto = (ProtocolBytes) protocol;
         int start = 0;
         string protoName = proto.GetString(start, ref start);
         int ret = proto.GetInt(start, ref start);
@@ -156,12 +154,15 @@ public class RoomPanel : PanelBase
     public void RecvFight(ProtocolBase protocol)
     {
         // TODO: 这里开始战斗
-        ProtocolBytes proto = (ProtocolBytes)protocol;
+        ProtocolBytes proto = (ProtocolBytes) protocol;
 
         // 开始太空战斗
         SpaceBattle.Instance.StartBattle(proto);
 
 //        MultiBattle.instance.StartBattle(proto);
+
+        // 加载战斗场景
+        SceneManager.LoadScene("_Scenes/Battle");
 
         Close();
     }
