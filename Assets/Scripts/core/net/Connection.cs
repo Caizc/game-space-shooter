@@ -172,14 +172,14 @@ public class Connection
     }
 
     /// <summary>
-    /// 每个逻辑帧处理消息分发和向服务端发送心跳消息
+    /// 每隔固定时间执行消息分发和向服务端发送心跳消息
     /// </summary>
     public void Update()
     {
         // 消息分发
         msgDist.Update();
 
-        // 心跳
+        // 向 Server 发送心跳
         if (status == Status.Connected)
         {
             if (Time.time - lastTickTime > heartBeatTime)

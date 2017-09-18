@@ -1,7 +1,7 @@
 ﻿using TrueSync;
 using UnityEngine;
 
-public class SyncedInputManager
+public class SyncedInputManager : MonoBehaviour
 {
     // 移动增量
     private Vector2 _deltaMovement;
