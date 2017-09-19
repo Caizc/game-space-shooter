@@ -94,8 +94,12 @@ public class SyncedPlayerController : TrueSyncBehaviour
     /// </summary>
     private void Move()
     {
-        TSVector movement = new TSVector(_movX, 0, _movY);
-        tsRigidBody.velocity = movement * speed;
+        if (!(_movX == 0 && _movY == 0))
+        {
+            bool gotIt = true;
+        }
+
+        tsRigidBody.velocity = new TSVector(_movX * speed, 0, _movY * speed);
 
         // 限制角色移动范围
         tsRigidBody.position = new TSVector(
@@ -110,15 +114,16 @@ public class SyncedPlayerController : TrueSyncBehaviour
         // 旋转方向
         if (_rotX == 0 && _rotY == 0)
         {
+
             tsTransform.rotation = TSQuaternion.Lerp(tsTransform.rotation, TSQuaternion.identity,
-                TrueSyncManager.DeltaTime * rotateSpeed);
+                Time.deltaTime * rotateSpeed);
         }
         else
         {
             TSVector joystickKnobPos = new TSVector(_rotX, 0, _rotY);
             TSQuaternion targetRot = TSQuaternion.LookRotation(joystickKnobPos);
             tsTransform.rotation =
-                TSQuaternion.Lerp(tsTransform.rotation, targetRot, TrueSyncManager.DeltaTime * rotateSpeed);
+                TSQuaternion.Lerp(tsTransform.rotation, targetRot, Time.deltaTime * rotateSpeed);
         }
 
         // 旋转粒子系统
