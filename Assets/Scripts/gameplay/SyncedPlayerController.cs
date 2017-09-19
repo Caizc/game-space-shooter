@@ -41,6 +41,8 @@ public class SyncedPlayerController : TrueSyncBehaviour
 
     void Start()
     {
+        Debug.Log("=== SyncedPlayerController.Start() ===");
+
         GameObject inputManagerObject = GameObject.FindWithTag("InputManager");
         if (inputManagerObject == null)
         {
@@ -55,8 +57,17 @@ public class SyncedPlayerController : TrueSyncBehaviour
         }
     }
 
+    public override void OnSyncedStart()
+    {
+        Debug.Log("=== SyncedPlayerController.OnSyncedStart() ===");
+
+        tsTransform.position = new TSVector(TSRandom.Range(-5, 5), 0, TSRandom.Range(-5, 5));
+    }
+
     public override void OnSyncedInput()
     {
+        Debug.Log("=== SyncedPlayerController.OnSyncedInput() ===");
+
         if (SpaceBattle.Instance.isBattleStart)
         {
             // 将飞船的位置和转向信息保存到 SyncedData 中以发送往 Server 同步到所有 Client
@@ -69,6 +80,8 @@ public class SyncedPlayerController : TrueSyncBehaviour
 
     public override void OnSyncedUpdate()
     {
+        Debug.Log("=== SyncedPlayerController.OnSyncedUpdate() ===");
+
         // TODO: 收到更新的操控指令
 
         _movX = TrueSyncInput.GetFP(0);

@@ -83,7 +83,7 @@ public class ProtocolBytes : ProtocolBase
             return null;
         }
 
-        byte[] byteArray = null;
+        byte[] byteArray = new byte[bytesLen];
 
         // TODO: 这两种从字节数组中获取部分字节数组的方式，哪种更高效一些呢？
         // way 1:

@@ -1,6 +1,8 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 /// <summary>
 /// 太空战斗场景管理
@@ -212,9 +214,15 @@ public class SpaceBattle
     /// <summary>
     /// 处理接收到的 TrueSync 消息
     /// </summary>
-    private void RecvTrueSyncData(ProtocolBase protoBase)
+    private void RecvTrueSyncData(ProtocolBase protocol)
     {
+        // 解析协议
+        int start = 0;
+        ProtocolBytes proto = (ProtocolBytes) protocol;
+        string protoName = proto.GetString(start, ref start);
+        byte[] data = proto.GetBytes(start, ref start);
+
         // TODO: 事件编码和发送玩家 ID 暂时写死（协议内容中可以解析到每个指令的玩家 ID）
-        OnEventCall(199, protoBase, -1);
+        OnEventCall(199, data, -1);
     }
 }
