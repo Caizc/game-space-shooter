@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Linq;
 
 /// <summary>
@@ -42,6 +41,22 @@ public class ProtocolBytes : ProtocolBase
             str += b.ToString() + " ";
         }
         return str;
+    }
+
+    /// <summary>
+    /// 添加一个字节
+    /// </summary>
+    public void AddByte(byte bt)
+    {
+        AddBytes(new[] {bt});
+    }
+
+    /// <summary>
+    /// 从字节数组的 start 处读取一个字节数据
+    /// </summary>
+    public byte GetByte(int start, ref int end)
+    {
+        return GetBytes(start, ref end).First();
     }
 
     /// <summary>

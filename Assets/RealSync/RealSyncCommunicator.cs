@@ -26,7 +26,8 @@ public class RealSyncCommunicator : ICommunicator
 
         // 使用 "TrueSyncData" 来标识通过 TrueSync 处理的消息
         proto.AddString("TrueSyncData");
-
+        // 添加事件编码
+        proto.AddByte(eventCode);
         // TODO: 这里直接将 object 强转为 byte[]，可能导致该接口不通用，只能提交已经序列化为字节数组的消息
         proto.AddBytes((byte[]) message);
 

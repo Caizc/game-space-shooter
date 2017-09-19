@@ -220,9 +220,10 @@ public class SpaceBattle
         int start = 0;
         ProtocolBytes proto = (ProtocolBytes) protocol;
         string protoName = proto.GetString(start, ref start);
+        byte eventCode = proto.GetByte(start, ref start);
         byte[] data = proto.GetBytes(start, ref start);
 
         // TODO: 事件编码和发送玩家 ID 暂时写死（协议内容中可以解析到每个指令的玩家 ID）
-        OnEventCall(199, data, -1);
+        OnEventCall(eventCode, data, -1);
     }
 }
