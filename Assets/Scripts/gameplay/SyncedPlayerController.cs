@@ -27,12 +27,11 @@ public class SyncedPlayerController : TrueSyncBehaviour
     [SerializeField] private ParticleSystem particleSystem1;
     [SerializeField] private ParticleSystem particleSystem2;
 
+    private SyncedInputManager _syncedInputManager;
     private AudioSource _audioSource;
 
     private FP _myTime = 0;
     private FP _nextFire = 0.25;
-
-    private SyncedInputManager _syncedInputManager;
 
     private FP _movX;
     private FP _movY;
@@ -41,8 +40,6 @@ public class SyncedPlayerController : TrueSyncBehaviour
 
     void Start()
     {
-        Debug.Log("=== SyncedPlayerController.Start() ===");
-
         GameObject inputManagerObject = GameObject.FindWithTag("InputManager");
         if (inputManagerObject == null)
         {
@@ -55,19 +52,17 @@ public class SyncedPlayerController : TrueSyncBehaviour
         {
             Debug.LogError("场景中缺失 SyncedInputManager 组件！");
         }
+
+        _audioSource = GetComponent<AudioSource>();
     }
 
     public override void OnSyncedStart()
     {
-        Debug.Log("=== SyncedPlayerController.OnSyncedStart() ===");
-
         tsTransform.position = new TSVector(TSRandom.Range(-5, 5), 0, TSRandom.Range(-5, 5));
     }
 
     public override void OnSyncedInput()
     {
-        Debug.Log("=== SyncedPlayerController.OnSyncedInput() ===");
-
         if (SpaceBattle.Instance.isBattleStart)
         {
             // 将飞船的位置和转向信息保存到 SyncedData 中以发送往 Server 同步到所有 Client
@@ -80,8 +75,6 @@ public class SyncedPlayerController : TrueSyncBehaviour
 
     public override void OnSyncedUpdate()
     {
-        Debug.Log("=== SyncedPlayerController.OnSyncedUpdate() ===");
-
         // TODO: 收到更新的操控指令
 
         _movX = TrueSyncInput.GetFP(0);
@@ -89,14 +82,18 @@ public class SyncedPlayerController : TrueSyncBehaviour
         _rotX = TrueSyncInput.GetFP(2);
         _rotY = TrueSyncInput.GetFP(3);
 
+        // 移动
         Move();
-    }
 
-    private void Move()
-    {
         // 开火
         Fire();
+    }
 
+    /// <summary>
+    /// 移动
+    /// </summary>
+    private void Move()
+    {
         TSVector movement = new TSVector(_movX, 0, _movY);
         tsRigidBody.velocity = movement * speed;
 
@@ -111,7 +108,7 @@ public class SyncedPlayerController : TrueSyncBehaviour
         tsRigidBody.rotation = TSQuaternion.Euler(0, 0, tsRigidBody.velocity.x * -tilt);
 
         // 旋转方向
-        if (tsRigidBody.Equals(TSVector2.zero))
+        if (_rotX == 0 && _rotY == 0)
         {
             tsTransform.rotation = TSQuaternion.Lerp(tsTransform.rotation, TSQuaternion.identity,
                 TrueSyncManager.DeltaTime * rotateSpeed);
@@ -136,6 +133,9 @@ public class SyncedPlayerController : TrueSyncBehaviour
         }
     }
 
+    /// <summary>
+    /// 开火
+    /// </summary>
     private void Fire()
     {
         _myTime += TrueSyncManager.DeltaTime;

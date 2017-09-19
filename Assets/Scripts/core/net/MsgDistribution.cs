@@ -53,7 +53,7 @@ public class MsgDistribution
     {
         string name = protocol.GetName();
 
-        Debug.Log("分发处理消息 " + name);
+//        Debug.Log("分发处理消息 " + name);
 
         if (eventDict.ContainsKey(name))
         {
