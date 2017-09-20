@@ -9,8 +9,7 @@ public class RealSyncCommunicator : ICommunicator
     /// <returns>往返时间</returns>
     public int RoundTripTime()
     {
-        float rtt = NetStatus.Instance.RoundTripTime;
-        return (int) rtt;
+        return (int) NetStatus.Instance.RoundTripTime;
     }
 
     /// <summary>

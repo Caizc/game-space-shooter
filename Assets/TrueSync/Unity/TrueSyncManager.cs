@@ -222,6 +222,7 @@ namespace TrueSync {
             Application.runInBackground = true;
 
             ICommunicator communicator = null;
+
 //            if (!PhotonNetwork.connected || !PhotonNetwork.inRoom) {
 //                Debug.LogWarning("You are not connected to Photon. TrueSync will start in offline mode.");
 //            } else {

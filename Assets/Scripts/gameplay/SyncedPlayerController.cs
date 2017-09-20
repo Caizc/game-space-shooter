@@ -38,6 +38,9 @@ public class SyncedPlayerController : TrueSyncBehaviour
     private FP _rotX;
     private FP _rotY;
 
+    // 死亡次数
+    [AddTracking] private int _death;
+
     void Start()
     {
         GameObject inputManagerObject = GameObject.FindWithTag("InputManager");
@@ -58,6 +61,7 @@ public class SyncedPlayerController : TrueSyncBehaviour
 
     public override void OnSyncedStart()
     {
+        _death = 0;
         tsTransform.position = new TSVector(TSRandom.Range(-5, 5), 0, TSRandom.Range(-5, 5));
     }
 
@@ -159,5 +163,10 @@ public class SyncedPlayerController : TrueSyncBehaviour
 
             _audioSource.Play();
         }
+    }
+
+    void OnGUI()
+    {
+        GUI.Label(new Rect(10, 100 + 30 * owner.Id, 300, 30), "player: " + owner.Id + ", deaths: " + _death);
     }
 }

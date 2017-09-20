@@ -11,7 +11,9 @@ public class SpaceBattle
 {
     private static SpaceBattle _instance;
 
-    // 获取 SpaceBattle 单例
+    /// <summary>
+    /// 获取 SpaceBattle 单例
+    /// </summary>
     public static SpaceBattle Instance
     {
         get
@@ -75,7 +77,7 @@ public class SpaceBattle
             // 产生飞船
             // SpawnShip(id, team, spid);
 
-            // 登记到房间用户列表中
+            // 将每个飞船所属的用户登记到房间用户列表中
             PlayerDict.Add(i, id);
         }
 
@@ -83,12 +85,30 @@ public class SpaceBattle
 //        NetMgr.srvConn.msgDist.AddListener("Hit", RecvHit);
 //        NetMgr.srvConn.msgDist.AddListener("Result", RecvResult);
 
-        // TODO: 向消息分发管理器注册相应事件的回调方法
-//        NetMgr.srvConn.msgDist.AddListener(Constant.UpdateShipInfo, RecvUpdateShipInfo);
+        // 向消息分发管理器注册接收到 TrueSync 同步数据的回调方法
         NetMgr.Instance.srvConn.msgDist.AddListener("TrueSyncData", RecvTrueSyncData);
 
         isBattleStart = true;
     }
+
+    /// <summary>
+    /// 处理接收到的 TrueSync 消息
+    /// </summary>
+    private void RecvTrueSyncData(ProtocolBase protocol)
+    {
+        // 解析协议
+        int start = 0;
+        ProtocolBytes proto = (ProtocolBytes)protocol;
+        // 协议名称（暂时没用，但也要取出来）
+        string unused = proto.GetString(start, ref start);
+        byte eventCode = proto.GetByte(start, ref start);
+        byte[] data = proto.GetBytes(start, ref start);
+
+        // TODO: 事件编码和发送玩家 ID 暂时写死（协议内容中可以解析到每个指令的玩家 ID）
+        OnEventCall(eventCode, data, -1);
+    }
+
+    #region Obsolete Code
 
     /// <summary>
     /// 在场景中生成飞船
@@ -179,7 +199,8 @@ public class SpaceBattle
         // 解析协议
         int start = 0;
         ProtocolBytes proto = (ProtocolBytes) protocol;
-        string protoName = proto.GetString(start, ref start);
+        // 协议名称（暂时没用，但也要取出来）
+        string unused = proto.GetString(start, ref start);
         string id = proto.GetString(start, ref start);
 
         // 如果该位置同步消息包是自己发出的，则忽略，不进行位置和转向同步，避免被拉回到之前的位置上
@@ -211,19 +232,5 @@ public class SpaceBattle
         ship.playerController.deltaRotation = rot;
     }
 
-    /// <summary>
-    /// 处理接收到的 TrueSync 消息
-    /// </summary>
-    private void RecvTrueSyncData(ProtocolBase protocol)
-    {
-        // 解析协议
-        int start = 0;
-        ProtocolBytes proto = (ProtocolBytes) protocol;
-        string protoName = proto.GetString(start, ref start);
-        byte eventCode = proto.GetByte(start, ref start);
-        byte[] data = proto.GetBytes(start, ref start);
-
-        // TODO: 事件编码和发送玩家 ID 暂时写死（协议内容中可以解析到每个指令的玩家 ID）
-        OnEventCall(eventCode, data, -1);
-    }
+    #endregion
 }

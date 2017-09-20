@@ -79,7 +79,8 @@ public class NetMgr
         // 解析协议
         int start = 0;
         ProtocolBytes proto = (ProtocolBytes) protocol;
-        string protoName = proto.GetString(start, ref start);
+        // 协议名称（暂时没用，但也要取出来）
+        string unused = proto.GetString(start, ref start);
         float time = proto.GetFloat(start, ref start);
 
         // 根据 Ping 消息中的发送时间，计算出网络往返时间（延迟），并更新网络状态 NetStatus

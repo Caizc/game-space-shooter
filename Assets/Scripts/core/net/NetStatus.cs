@@ -60,8 +60,8 @@ public class NetStatus
         _rttSum += rtt;
         _rttCount++;
 
-        // 每累积 4 个延迟数据则计算一次平均延迟
-        if (_rttCount > 3)
+        // 每累积 5 个延迟数据则计算一次平均延迟
+        if (_rttCount > 4)
         {
             // 计算平均延迟，并转换为毫秒
             _lastRtt = _rttSum / _rttCount * 1000f;

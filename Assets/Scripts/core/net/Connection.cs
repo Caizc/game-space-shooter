@@ -147,7 +147,7 @@ public class Connection
     {
         if (status != Status.Connected)
         {
-            Debug.LogError("[Connection]还没链接就发送数据是不好的");
+            Debug.LogError("[Connection] 还没建立连接就发送数据是会出错的！");
             return true;
         }
 
