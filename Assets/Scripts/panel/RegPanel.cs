@@ -56,12 +56,12 @@ public class RegPanel : PanelBase
             return;
         }
         //连接服务器
-        if (NetMgr.srvConn.status != Connection.Status.Connected)
+        if (NetMgr.Instance.srvConn.status != Connection.Status.Connected)
         {
             string host = IPConfig.IP;
             int port = IPConfig.Port;
-            NetMgr.srvConn.proto = new ProtocolBytes();
-            if (!NetMgr.srvConn.Connect(host, port))
+            NetMgr.Instance.srvConn.proto = new ProtocolBytes();
+            if (!NetMgr.Instance.srvConn.Connect(host, port))
                 PanelMgr.instance.OpenPanel<TipPanel>("", "连接服务器失败!");
         }
         //发送
@@ -70,7 +70,7 @@ public class RegPanel : PanelBase
         protocol.AddString(idInput.text);
         protocol.AddString(pwInput.text);
         Debug.Log("发送 " + protocol.GetDesc());
-        NetMgr.srvConn.Send(protocol, OnRegBack);
+        NetMgr.Instance.srvConn.Send(protocol, OnRegBack);
     }
 
     public void OnRegBack(ProtocolBase protocol)

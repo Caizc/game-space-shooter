@@ -9,7 +9,8 @@ public class RealSyncCommunicator : ICommunicator
     /// <returns>往返时间</returns>
     public int RoundTripTime()
     {
-        return 0;
+        float rtt = NetStatus.Instance.RoundTripTime;
+        return (int) rtt;
     }
 
     /// <summary>
@@ -32,7 +33,7 @@ public class RealSyncCommunicator : ICommunicator
         proto.AddBytes((byte[]) message);
 
         // 向 Server 发送消息
-        NetMgr.srvConn.Send(proto);
+        NetMgr.Instance.srvConn.Send(proto);
     }
 
     /// <summary>

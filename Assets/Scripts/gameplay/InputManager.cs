@@ -83,6 +83,6 @@ public class InputManager : MonoBehaviour
         proto.AddFloat(rot.y);
 
         // 向 Server 发送消息
-        NetMgr.srvConn.Send(proto);
+        NetMgr.Instance.srvConn.Send(proto);
     }
 }

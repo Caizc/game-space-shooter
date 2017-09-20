@@ -47,23 +47,23 @@ public class RoomListPanel : PanelBase
         newBtn.onClick.AddListener(OnNewClick);
         closeBtn.onClick.AddListener(OnCloseClick);
         //监听
-        NetMgr.srvConn.msgDist.AddListener("GetAchieve", RecvGetAchieve);
-        NetMgr.srvConn.msgDist.AddListener("GetRoomList", RecvGetRoomList);
+        NetMgr.Instance.srvConn.msgDist.AddListener("GetAchieve", RecvGetAchieve);
+        NetMgr.Instance.srvConn.msgDist.AddListener("GetRoomList", RecvGetRoomList);
 
         //发送查询
         ProtocolBytes protocol = new ProtocolBytes();
         protocol.AddString("GetRoomList");
-        NetMgr.srvConn.Send(protocol);
+        NetMgr.Instance.srvConn.Send(protocol);
 
         protocol = new ProtocolBytes();
         protocol.AddString("GetAchieve");
-        NetMgr.srvConn.Send(protocol);
+        NetMgr.Instance.srvConn.Send(protocol);
     }
 
     public override void OnClosing()
     {
-        NetMgr.srvConn.msgDist.DelListener("GetAchieve", RecvGetAchieve);
-        NetMgr.srvConn.msgDist.DelListener("GetRoomList", RecvGetRoomList);
+        NetMgr.Instance.srvConn.msgDist.DelListener("GetAchieve", RecvGetAchieve);
+        NetMgr.Instance.srvConn.msgDist.DelListener("GetRoomList", RecvGetRoomList);
     }
 
     #endregion
@@ -155,7 +155,7 @@ public class RoomListPanel : PanelBase
     {
         ProtocolBytes protocol = new ProtocolBytes();
         protocol.AddString("GetRoomList");
-        NetMgr.srvConn.Send(protocol);
+        NetMgr.Instance.srvConn.Send(protocol);
     }
 
     //加入按钮
@@ -165,7 +165,7 @@ public class RoomListPanel : PanelBase
         protocol.AddString("EnterRoom");
 
         protocol.AddInt(int.Parse(name));
-        NetMgr.srvConn.Send(protocol, OnJoinBtnBack);
+        NetMgr.Instance.srvConn.Send(protocol, OnJoinBtnBack);
         Debug.Log("请求进入房间 " + name);
     }
 
@@ -195,7 +195,7 @@ public class RoomListPanel : PanelBase
     {
         ProtocolBytes protocol = new ProtocolBytes();
         protocol.AddString("CreateRoom");
-        NetMgr.srvConn.Send(protocol, OnNewBack);
+        NetMgr.Instance.srvConn.Send(protocol, OnNewBack);
     }
 
     //新建按钮返回
@@ -224,7 +224,7 @@ public class RoomListPanel : PanelBase
     {
         ProtocolBytes protocol = new ProtocolBytes();
         protocol.AddString("Logout");
-        NetMgr.srvConn.Send(protocol, OnCloseBack);
+        NetMgr.Instance.srvConn.Send(protocol, OnCloseBack);
     }
 
     //登出返回
@@ -232,6 +232,6 @@ public class RoomListPanel : PanelBase
     {
         PanelMgr.instance.OpenPanel<TipPanel>("", "登出成功！");
         PanelMgr.instance.OpenPanel<LoginPanel>("", "");
-        NetMgr.srvConn.Close();
+        NetMgr.Instance.srvConn.Close();
     }
 }

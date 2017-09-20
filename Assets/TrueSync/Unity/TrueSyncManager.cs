@@ -204,6 +204,8 @@ namespace TrueSync {
             lockedTimeStep = currentConfig.lockedTimeStep;
 
             StateTracker.Init(currentConfig.rollbackWindow);
+
+            // TODO: 随机数种子在这里指定，需要修改为由 Server 统一指定
             TSRandom.Init();
 
             if (currentConfig.physics2DEnabled || currentConfig.physics3DEnabled) {
@@ -226,7 +228,7 @@ namespace TrueSync {
 //                communicator = new PhotonTrueSyncCommunicator(PhotonNetwork.networkingPeer);
 //            }
 
-            if (NetMgr.srvConn.status == Connection.Status.None)
+            if (NetMgr.Instance.srvConn.status == Connection.Status.None)
             {
                 Debug.LogWarning("You are not connected to Server. TrueSync will start in offline mode.");
             }

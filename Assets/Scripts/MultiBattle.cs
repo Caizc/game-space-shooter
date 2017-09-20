@@ -91,10 +91,10 @@ public class MultiBattle : MonoBehaviour
         }
 
         // 向消息分发管理器注册相应事件的回调方法
-        NetMgr.srvConn.msgDist.AddListener("UpdateUnitInfo", RecvUpdateUnitInfo);
-        NetMgr.srvConn.msgDist.AddListener("Shooting", RecvShooting);
-        NetMgr.srvConn.msgDist.AddListener("Hit", RecvHit);
-        NetMgr.srvConn.msgDist.AddListener("Result", RecvResult);
+        NetMgr.Instance.srvConn.msgDist.AddListener("UpdateUnitInfo", RecvUpdateUnitInfo);
+        NetMgr.Instance.srvConn.msgDist.AddListener("Shooting", RecvShooting);
+        NetMgr.Instance.srvConn.msgDist.AddListener("Hit", RecvHit);
+        NetMgr.Instance.srvConn.msgDist.AddListener("Result", RecvResult);
     }
 
     /// <summary>
@@ -288,9 +288,9 @@ public class MultiBattle : MonoBehaviour
             PanelMgr.instance.OpenPanel<WinPanel>("", 0);
         }
         //取消监听
-        NetMgr.srvConn.msgDist.DelListener("UpdateUnitInfo", RecvUpdateUnitInfo);
-        NetMgr.srvConn.msgDist.DelListener("Shooting", RecvShooting);
-        NetMgr.srvConn.msgDist.DelListener("Hit", RecvHit);
-        NetMgr.srvConn.msgDist.DelListener("Result", RecvResult);
+        NetMgr.Instance.srvConn.msgDist.DelListener("UpdateUnitInfo", RecvUpdateUnitInfo);
+        NetMgr.Instance.srvConn.msgDist.DelListener("Shooting", RecvShooting);
+        NetMgr.Instance.srvConn.msgDist.DelListener("Hit", RecvHit);
+        NetMgr.Instance.srvConn.msgDist.DelListener("Result", RecvResult);
     }
 }

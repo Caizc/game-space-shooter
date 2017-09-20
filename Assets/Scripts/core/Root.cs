@@ -10,6 +10,9 @@ public class Root : MonoBehaviour
         DontDestroyOnLoad(this);
         Application.runInBackground = true;
 
+        // 开启网络
+        NetMgr.Instance.Start();
+
         // 打开登录面板
         PanelMgr.instance.OpenPanel<LoginPanel>("");
 
@@ -19,6 +22,6 @@ public class Root : MonoBehaviour
     void FixedUpdate()
     {
         // 固定时间间隔更新，处理消息队列中的消息
-        NetMgr.Update();
+        NetMgr.Instance.Update();
     }
 }

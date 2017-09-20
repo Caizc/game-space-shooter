@@ -630,7 +630,7 @@ public class Tank : MonoBehaviour
         // 炮管
         float angleX = turretRollTarget;
         proto.AddFloat(angleX);
-        NetMgr.srvConn.Send(proto);
+        NetMgr.Instance.srvConn.Send(proto);
     }
 
 
@@ -647,7 +647,7 @@ public class Tank : MonoBehaviour
         proto.AddFloat(rot.x);
         proto.AddFloat(rot.y);
         proto.AddFloat(rot.z);
-        NetMgr.srvConn.Send(proto);
+        NetMgr.Instance.srvConn.Send(proto);
     }
 
     public void NetShoot(Vector3 pos, Vector3 rot)
@@ -667,7 +667,7 @@ public class Tank : MonoBehaviour
         proto.AddString("Hit");
         proto.AddString(id);
         proto.AddFloat(damage);
-        NetMgr.srvConn.Send(proto);
+        NetMgr.Instance.srvConn.Send(proto);
     }
 
 

@@ -172,22 +172,25 @@ public class Connection
     }
 
     /// <summary>
-    /// 每隔固定时间执行消息分发和向服务端发送心跳消息
+    /// 每隔固定时间执行消息分发和向服务端发送心跳消息、Ping 消息
     /// </summary>
     public void Update()
     {
         // 消息分发
         msgDist.Update();
 
-        // 向 Server 发送心跳
         if (status == Status.Connected)
         {
+            // 向 Server 发送心跳
             if (Time.time - lastTickTime > heartBeatTime)
             {
-                ProtocolBase protocol = NetMgr.GetHeatBeatProtocol();
+                ProtocolBase protocol = NetMgr.Instance.GetHeatBeatProtocol();
                 Send(protocol);
                 lastTickTime = Time.time;
             }
+
+            // 发送 Ping 消息
+            Send(NetMgr.Instance.GetPingProtocol());
         }
     }
 }

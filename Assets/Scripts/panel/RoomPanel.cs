@@ -38,18 +38,18 @@ public class RoomPanel : PanelBase
         closeBtn.onClick.AddListener(OnCloseClick);
         startBtn.onClick.AddListener(OnStartClick);
         //监听
-        NetMgr.srvConn.msgDist.AddListener("GetRoomInfo", RecvGetRoomInfo);
-        NetMgr.srvConn.msgDist.AddListener("Fight", RecvFight);
+        NetMgr.Instance.srvConn.msgDist.AddListener("GetRoomInfo", RecvGetRoomInfo);
+        NetMgr.Instance.srvConn.msgDist.AddListener("Fight", RecvFight);
         //发送查询
         ProtocolBytes protocol = new ProtocolBytes();
         protocol.AddString("GetRoomInfo");
-        NetMgr.srvConn.Send(protocol);
+        NetMgr.Instance.srvConn.Send(protocol);
     }
 
     public override void OnClosing()
     {
-        NetMgr.srvConn.msgDist.DelListener("GetRoomInfo", RecvGetRoomInfo);
-        NetMgr.srvConn.msgDist.DelListener("Fight", RecvFight);
+        NetMgr.Instance.srvConn.msgDist.DelListener("GetRoomInfo", RecvGetRoomInfo);
+        NetMgr.Instance.srvConn.msgDist.DelListener("Fight", RecvFight);
     }
 
 
@@ -101,7 +101,7 @@ public class RoomPanel : PanelBase
     {
         ProtocolBytes protocol = new ProtocolBytes();
         protocol.AddString("LeaveRoom");
-        NetMgr.srvConn.Send(protocol, OnCloseBack);
+        NetMgr.Instance.srvConn.Send(protocol, OnCloseBack);
     }
 
 
@@ -130,7 +130,7 @@ public class RoomPanel : PanelBase
     {
         ProtocolBytes protocol = new ProtocolBytes();
         protocol.AddString("StartFight");
-        NetMgr.srvConn.Send(protocol, OnStartBack);
+        NetMgr.Instance.srvConn.Send(protocol, OnStartBack);
     }
 
     public void OnStartBack(ProtocolBase protocol)

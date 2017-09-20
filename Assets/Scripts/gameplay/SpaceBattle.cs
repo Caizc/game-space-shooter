@@ -43,7 +43,7 @@ public class SpaceBattle
     /// </summary>
     private SpaceBattle()
     {
-        // nothing to do her.
+        // nothing to do here.
     }
 
     /// <summary>
@@ -85,7 +85,7 @@ public class SpaceBattle
 
         // TODO: 向消息分发管理器注册相应事件的回调方法
 //        NetMgr.srvConn.msgDist.AddListener(Constant.UpdateShipInfo, RecvUpdateShipInfo);
-        NetMgr.srvConn.msgDist.AddListener("TrueSyncData", RecvTrueSyncData);
+        NetMgr.Instance.srvConn.msgDist.AddListener("TrueSyncData", RecvTrueSyncData);
 
         isBattleStart = true;
     }

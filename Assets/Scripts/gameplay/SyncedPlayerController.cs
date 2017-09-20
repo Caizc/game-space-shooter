@@ -116,14 +116,14 @@ public class SyncedPlayerController : TrueSyncBehaviour
         {
 
             tsTransform.rotation = TSQuaternion.Lerp(tsTransform.rotation, TSQuaternion.identity,
-                Time.deltaTime * rotateSpeed);
+                TrueSyncManager.DeltaTime * rotateSpeed);
         }
         else
         {
             TSVector joystickKnobPos = new TSVector(_rotX, 0, _rotY);
             TSQuaternion targetRot = TSQuaternion.LookRotation(joystickKnobPos);
             tsTransform.rotation =
-                TSQuaternion.Lerp(tsTransform.rotation, targetRot, Time.deltaTime * rotateSpeed);
+                TSQuaternion.Lerp(tsTransform.rotation, targetRot, TrueSyncManager.DeltaTime * rotateSpeed);
         }
 
         // 旋转粒子系统
