@@ -30,9 +30,12 @@ public class Connection
     public ProtocolBase proto;
 
     // 最后更新的心跳时间
-    public float lastTickTime = 0;
+    private float lastTickTime = 0;
 
-    public float heartBeatTime = 30;
+    private float heartBeatTime = 30;
+
+    // Ping 计数器
+    private int _pingTick = 0;
 
     // 消息分发
     public MsgDistribution msgDist = new MsgDistribution();
@@ -189,8 +192,14 @@ public class Connection
                 lastTickTime = Time.time;
             }
 
-            // 发送 Ping 消息
-            Send(NetMgr.Instance.GetPingProtocol());
+            // 每隔 5 帧向 Server 发送一个 Ping 消息
+            if (_pingTick > 4)
+            {
+                _pingTick = 0;
+
+                Send(NetMgr.Instance.GetPingProtocol());
+            }
+            _pingTick++;
         }
     }
 }

@@ -19,7 +19,7 @@ public class NetStatus
     }
 
     /// <summary>
-    /// 平均延迟
+    /// 平均延迟（毫秒）
     /// </summary>
     public float RoundTripTime
     {
@@ -29,7 +29,7 @@ public class NetStatus
     private static NetStatus _instance;
 
     /// <summary>
-    /// 总延迟 = 延迟1 + 延迟2 + 延迟3 + ...
+    /// 总延迟 = 延迟1 + 延迟2 + 延迟3 + ...，单位为秒
     /// </summary>
     private float _rttSum = 0.0f;
 
@@ -39,7 +39,7 @@ public class NetStatus
     private int _rttCount = 0;
 
     /// <summary>
-    /// 最后一个平均延迟 = 总延迟/延迟计数
+    /// 最后一个平均延迟 = 总延迟/延迟计数，单位为毫秒
     /// </summary>
     private float _lastRtt = 0.0f;
 
@@ -51,6 +51,10 @@ public class NetStatus
         // nothing to do here.
     }
 
+    /// <summary>
+    /// 延迟累计
+    /// </summary>
+    /// <param name="rtt">网络延迟，单位为秒</param>
     public void AddRtt(float rtt)
     {
         _rttSum += rtt;
@@ -59,7 +63,8 @@ public class NetStatus
         // 每累积 4 个延迟数据则计算一次平均延迟
         if (_rttCount > 3)
         {
-            _lastRtt = _rttSum / _rttCount;
+            // 计算平均延迟，并转换为毫秒
+            _lastRtt = _rttSum / _rttCount * 1000f;
             ResetRtt();
         }
     }
