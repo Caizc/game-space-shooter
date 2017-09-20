@@ -1,5 +1,7 @@
-﻿using TrueSync;
+﻿using System;
+using TrueSync;
 using UnityEngine;
+using UnityEngine.UI;
 
 [System.SerializableAttribute]
 public class BoundaryFP
@@ -28,6 +30,9 @@ public class SyncedPlayerController : TrueSyncBehaviour
     [SerializeField] private ParticleSystem particleSystem2;
 
     private SyncedInputManager _syncedInputManager;
+    private SyncedHealth _syncedHealth;
+
+    private Text _healthText;
     private AudioSource _audioSource;
 
     private FP _myTime = 0;
@@ -56,7 +61,31 @@ public class SyncedPlayerController : TrueSyncBehaviour
             Debug.LogError("场景中缺失 SyncedInputManager 组件！");
         }
 
+        _syncedHealth = GetComponent<SyncedHealth>();
+
+        GameObject uiCameraObject = GameObject.Find("UICamera");
+        if (uiCameraObject != null)
+        {
+            try
+            {
+                _healthText = uiCameraObject.transform.GetChild(2).transform.GetChild(0).GetComponent<Text>();
+            }
+            catch (Exception e)
+            {
+                Debug.LogError("Can not get the reference of 'HealthText'!");
+            }
+        }
+        else
+        {
+            Debug.LogError("GameObject 'UICamera' is missing in the current scene!");
+        }
+
         _audioSource = GetComponent<AudioSource>();
+    }
+
+    void Update()
+    {
+        UpdateHealth();
     }
 
     public override void OnSyncedStart()
@@ -163,6 +192,17 @@ public class SyncedPlayerController : TrueSyncBehaviour
 
             _audioSource.Play();
         }
+    }
+
+    private void UpdateHealth()
+    {
+        _healthText.text = "Health: " + _syncedHealth.Health;
+    }
+
+    // TODO
+    public void Respawn()
+    {
+        tsTransform.position = new TSVector(TSRandom.Range(-5, 5), 0, TSRandom.Range(-5, 5));
     }
 
     void OnGUI()
