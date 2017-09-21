@@ -229,6 +229,6 @@ public class SyncedPlayerController : TrueSyncBehaviour
 
     void OnGUI()
     {
-        GUI.Label(new Rect(10, 100 + 30 * owner.Id, 300, 30), "player: " + owner.Id + ", deaths: " + _death);
+        GUI.Label(new Rect(10, 100 + 30 * owner.Id, 300, 30), "player: " + owner.name + ", deaths: " + _death);
     }
 }
