@@ -29,7 +29,7 @@ public class SyncedPlayerController : TrueSyncBehaviour
     // 子弹 Prefab 和枪口位置
     [SerializeField] private GameObject shot;
 
-    [SerializeField] private TSTransform shotSpawn;
+    [SerializeField] private Transform shotSpawn;
 
     // 开火间隔
     [SerializeField] private FP fireDelta = 0.25;
@@ -191,9 +191,9 @@ public class SyncedPlayerController : TrueSyncBehaviour
             _nextFire = _myTime + fireDelta;
 
             // 生成子弹
-            TSTransform shotSpawnTransform = shotSpawn.GetComponent<TSTransform>();
-            TrueSyncManager.SyncedInstantiate(shot, shotSpawnTransform.position,
-                shotSpawnTransform.rotation);
+            TrueSyncManager.SyncedInstantiate(shot,
+                new TSVector(shotSpawn.position.x, shotSpawn.position.y, shotSpawn.position.z),
+                tsTransform.rotation);
 
             _nextFire = _nextFire - _myTime;
             _myTime = 0;
