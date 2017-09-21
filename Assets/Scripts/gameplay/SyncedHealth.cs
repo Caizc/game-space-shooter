@@ -16,12 +16,27 @@ public class SyncedHealth : TrueSyncBehaviour
     /// </summary>
     [AddTracking] public int Health = 100;
 
+    /// <summary>
+    /// 是否已死亡/损毁
+    /// </summary>
+    [AddTracking] public bool IsDead;
+
     // 临时保存最大生命值/耐久度
     private int _maxHealth;
 
     public override void OnSyncedStart()
     {
+        IsDead = false;
         _maxHealth = Health;
+    }
+
+    public override void OnSyncedUpdate()
+    {
+        if (IsDead)
+        {
+            // 如果已死亡/损毁，同步销毁本对象
+            TrueSyncManager.SyncedDestroy(this.gameObject);
+        }
     }
 
     /// <summary>
@@ -81,8 +96,8 @@ public class SyncedHealth : TrueSyncBehaviour
         }
         else
         {
-            // 否则，同步销毁本对象
-            TrueSyncManager.SyncedDestroy(this.gameObject);
+            // 否则，标记本对象已死亡/损毁
+            IsDead = true;
         }
     }
 }

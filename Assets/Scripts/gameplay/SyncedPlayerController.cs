@@ -58,8 +58,10 @@ public class SyncedPlayerController : TrueSyncBehaviour
     // 死亡次数
     [AddTracking] private int _death;
 
-    void Start()
+    public override void OnSyncedStart()
     {
+        tsTransform.position = new TSVector(TSRandom.Range(-5, 5), 0, TSRandom.Range(-5, 5));
+
         GameObject inputManagerObject = GameObject.FindWithTag("InputManager");
         if (inputManagerObject == null)
         {
@@ -73,7 +75,7 @@ public class SyncedPlayerController : TrueSyncBehaviour
             Debug.LogError("场景中缺失 SyncedInputManager 组件！");
         }
 
-        _shotSpawnTransform = shot.GetComponent<TSTransform>();
+        _shotSpawnTransform = shotSpawn.GetComponent<TSTransform>();
         _syncedHealth = GetComponent<SyncedHealth>();
 
         GameObject uiCameraObject = GameObject.Find("UICamera");
@@ -94,17 +96,8 @@ public class SyncedPlayerController : TrueSyncBehaviour
         }
 
         _audioSource = GetComponent<AudioSource>();
-    }
 
-    void Update()
-    {
-        UpdateHealth();
-    }
-
-    public override void OnSyncedStart()
-    {
         _death = 0;
-        tsTransform.position = new TSVector(TSRandom.Range(-5, 5), 0, TSRandom.Range(-5, 5));
     }
 
     public override void OnSyncedInput()
@@ -121,6 +114,8 @@ public class SyncedPlayerController : TrueSyncBehaviour
 
     public override void OnSyncedUpdate()
     {
+        UpdateHealth();
+
         _movX = TrueSyncInput.GetFP(0);
         _movY = TrueSyncInput.GetFP(1);
         _rotX = TrueSyncInput.GetFP(2);

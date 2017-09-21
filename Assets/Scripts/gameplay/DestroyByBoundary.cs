@@ -1,9 +1,10 @@
-﻿using UnityEngine;
+﻿using TrueSync;
+using UnityEngine;
 
 public class DestroyByBoundary : MonoBehaviour
 {
-    void OnTriggerExit(Collider other)
+    public void OnSyncedTriggerExit(TSCollision other)
     {
-		Destroy(other.gameObject);
+        TrueSyncManager.Destroy(other.gameObject);
     }
 }
