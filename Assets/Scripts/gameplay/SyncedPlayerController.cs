@@ -27,7 +27,11 @@ public class SyncedPlayerController : TrueSyncBehaviour
     [SerializeField] private FP tilt;
 
     // 子弹 Prefab 和枪口位置
-    [SerializeField] private GameObject shot;
+    [SerializeField] private GameObject playerShot;
+
+    [SerializeField] private GameObject enemyShot;
+
+    private GameObject _currentShot;
 
     [SerializeField] private Transform shotSpawn;
 
@@ -72,6 +76,14 @@ public class SyncedPlayerController : TrueSyncBehaviour
             Debug.LogError("场景中缺失 SyncedInputManager 组件！");
         }
 
+        if (owner.id.Equals(localOwner.id))
+        {
+            _currentShot = playerShot;
+        }
+        else
+        {
+            _currentShot = enemyShot;
+        }
 
         _syncedHealth = GetComponent<SyncedHealth>();
 
@@ -191,7 +203,7 @@ public class SyncedPlayerController : TrueSyncBehaviour
             _nextFire = _myTime + fireDelta;
 
             // 生成子弹
-            TrueSyncManager.SyncedInstantiate(shot,
+            TrueSyncManager.SyncedInstantiate(_currentShot,
                 new TSVector(shotSpawn.position.x, shotSpawn.position.y, shotSpawn.position.z),
                 tsTransform.rotation);
 
