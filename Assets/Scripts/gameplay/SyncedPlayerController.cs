@@ -42,9 +42,6 @@ public class SyncedPlayerController : TrueSyncBehaviour
     private SyncedInputManager _syncedInputManager;
     private SyncedHealth _syncedHealth;
 
-    private TSTransform _shotSpawnTransform;
-
-    private Text _healthText;
     private AudioSource _audioSource;
 
     private FP _myTime = 0;
@@ -75,24 +72,29 @@ public class SyncedPlayerController : TrueSyncBehaviour
             Debug.LogError("场景中缺失 SyncedInputManager 组件！");
         }
 
-        _shotSpawnTransform = shotSpawn.GetComponent<TSTransform>();
+
         _syncedHealth = GetComponent<SyncedHealth>();
 
-        GameObject uiCameraObject = GameObject.Find("UICamera");
-        if (uiCameraObject != null)
+        // 如果该对象为本地玩家对象，则将其生命值显示到 UI 控件上
+        if (owner.id.Equals(localOwner.id))
         {
-            try
+            GameObject uiCameraObject = GameObject.Find("UICamera");
+            if (uiCameraObject != null)
             {
-                _healthText = uiCameraObject.transform.GetChild(2).transform.GetChild(0).GetComponent<Text>();
+                UIManager uiManager = uiCameraObject.GetComponent<UIManager>();
+                if (uiManager != null)
+                {
+                    uiManager.PlayerHealth = _syncedHealth;
+                }
+                else
+                {
+                    Debug.LogError("Can not get the reference of 'HealthText'!");
+                }
             }
-            catch (Exception e)
+            else
             {
-                Debug.LogError("Can not get the reference of 'HealthText'!");
+                Debug.LogError("GameObject 'UICamera' is missing in the current scene!");
             }
-        }
-        else
-        {
-            Debug.LogError("GameObject 'UICamera' is missing in the current scene!");
         }
 
         _audioSource = GetComponent<AudioSource>();
@@ -114,8 +116,6 @@ public class SyncedPlayerController : TrueSyncBehaviour
 
     public override void OnSyncedUpdate()
     {
-        UpdateHealth();
-
         _movX = TrueSyncInput.GetFP(0);
         _movY = TrueSyncInput.GetFP(1);
         _rotX = TrueSyncInput.GetFP(2);
@@ -191,8 +191,9 @@ public class SyncedPlayerController : TrueSyncBehaviour
             _nextFire = _myTime + fireDelta;
 
             // 生成子弹
-            TrueSyncManager.SyncedInstantiate(shot, _shotSpawnTransform.position,
-                _shotSpawnTransform.rotation);
+            TSTransform shotSpawnTransform = shotSpawn.GetComponent<TSTransform>();
+            TrueSyncManager.SyncedInstantiate(shot, shotSpawnTransform.position,
+                shotSpawnTransform.rotation);
 
             _nextFire = _nextFire - _myTime;
             _myTime = 0;
@@ -212,11 +213,6 @@ public class SyncedPlayerController : TrueSyncBehaviour
         _syncedHealth.Reset();
         // 设置随机出生位置
         tsTransform.position = new TSVector(TSRandom.Range(-5, 5), 0, TSRandom.Range(-5, 5));
-    }
-
-    private void UpdateHealth()
-    {
-        _healthText.text = "Health: " + _syncedHealth.Health;
     }
 
     void OnGUI()
