@@ -192,9 +192,8 @@ public class SyncedPlayerController : TrueSyncBehaviour
         {
             _nextFire = _myTime + fireDelta;
 
-            TSTransform shotSpawnTransform = shotSpawn.GetComponent<TSTransform>();
-
-            TrueSyncManager.SyncedInstantiate(shot, shotSpawnTransform.position, shotSpawnTransform.rotation);
+            // 生成子弹
+            Instantiate(shot, shotSpawn.position, shotSpawn.rotation);
 
             _nextFire = _nextFire - _myTime;
             _myTime = 0;
