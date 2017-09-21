@@ -29,7 +29,7 @@ public class SyncedPlayerController : TrueSyncBehaviour
     // 子弹 Prefab 和枪口位置
     [SerializeField] private GameObject shot;
 
-    [SerializeField] private Transform shotSpawn;
+    [SerializeField] private TSTransform shotSpawn;
 
     // 开火间隔
     [SerializeField] private FP fireDelta = 0.25;
