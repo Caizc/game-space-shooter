@@ -12,12 +12,16 @@ public class SyncedHealth : TrueSyncBehaviour
     [SerializeField] private GameObject playerExplosion;
 
     /// <summary>
-    /// 角色生命值/物品耐久度
+    /// 当前角色生命值/物品耐久度
     /// </summary>
     [AddTracking] public int Health = 100;
 
+    // 临时保存最大生命值/耐久度
+    private int _maxHealth;
+
     public override void OnSyncedStart()
     {
+        _maxHealth = Health;
     }
 
     /// <summary>
@@ -38,6 +42,14 @@ public class SyncedHealth : TrueSyncBehaviour
     }
 
     /// <summary>
+    /// 重置
+    /// </summary>
+    public void Reset()
+    {
+        Health = _maxHealth;
+    }
+
+    /// <summary>
     /// 播放视觉特效和声音特效
     /// </summary>
     private void PlayFX()
@@ -53,11 +65,24 @@ public class SyncedHealth : TrueSyncBehaviour
     /// </summary>
     private void Death()
     {
-        TrueSyncManager.SyncedDestroy(this.gameObject);
-
-        if (null != playerExplosion)
+        if (this.gameObject.tag == "Player")
         {
-            Instantiate(playerExplosion, transform.position, transform.rotation);
+            // 如果该对象是玩家角色，则播放玩家角色爆炸特效，并进行重生处理
+            if (null != playerExplosion)
+            {
+                Instantiate(playerExplosion, transform.position, transform.rotation);
+            }
+
+            SyncedPlayerController playerController = GetComponent<SyncedPlayerController>();
+            if (playerController != null)
+            {
+                playerController.Respawn();
+            }
+        }
+        else
+        {
+            // 否则，同步销毁本对象
+            TrueSyncManager.SyncedDestroy(this.gameObject);
         }
     }
 }

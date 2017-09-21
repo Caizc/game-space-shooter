@@ -9,6 +9,9 @@ public class BoundaryFP
     public FP xMin, xMax, zMin, zMax;
 }
 
+/// <summary>
+/// 玩家角色控制器
+/// </summary>
 public class SyncedPlayerController : TrueSyncBehaviour
 {
     // 移动速度
@@ -17,16 +20,23 @@ public class SyncedPlayerController : TrueSyncBehaviour
     // 转向速度
     [SerializeField] private FP rotateSpeed;
 
+    // 移动范围界限
     [SerializeField] private BoundaryFP boundary;
 
     // 机身倾斜系数
     [SerializeField] private FP tilt;
 
+    // 子弹 Prefab 和枪口位置
     [SerializeField] private GameObject shot;
+
     [SerializeField] private Transform shotSpawn;
+
+    // 开火间隔
     [SerializeField] private FP fireDelta = 0.25;
 
+    // 引擎特效粒子系统
     [SerializeField] private ParticleSystem particleSystem1;
+
     [SerializeField] private ParticleSystem particleSystem2;
 
     private SyncedInputManager _syncedInputManager;
@@ -108,8 +118,6 @@ public class SyncedPlayerController : TrueSyncBehaviour
 
     public override void OnSyncedUpdate()
     {
-        // TODO: 收到更新的操控指令
-
         _movX = TrueSyncInput.GetFP(0);
         _movY = TrueSyncInput.GetFP(1);
         _rotX = TrueSyncInput.GetFP(2);
@@ -147,7 +155,6 @@ public class SyncedPlayerController : TrueSyncBehaviour
         // 旋转方向
         if (_rotX == 0 && _rotY == 0)
         {
-
             tsTransform.rotation = TSQuaternion.Lerp(tsTransform.rotation, TSQuaternion.identity,
                 TrueSyncManager.DeltaTime * rotateSpeed);
         }
@@ -194,15 +201,22 @@ public class SyncedPlayerController : TrueSyncBehaviour
         }
     }
 
+    /// <summary>
+    /// 重生
+    /// </summary>
+    public void Respawn()
+    {
+        // 死亡次数加一
+        _death++;
+        // 重置生命值
+        _syncedHealth.Reset();
+        // 设置随机出生位置
+        tsTransform.position = new TSVector(TSRandom.Range(-5, 5), 0, TSRandom.Range(-5, 5));
+    }
+
     private void UpdateHealth()
     {
         _healthText.text = "Health: " + _syncedHealth.Health;
-    }
-
-    // TODO
-    public void Respawn()
-    {
-        tsTransform.position = new TSVector(TSRandom.Range(-5, 5), 0, TSRandom.Range(-5, 5));
     }
 
     void OnGUI()

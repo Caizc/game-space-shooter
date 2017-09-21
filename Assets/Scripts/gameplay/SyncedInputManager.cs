@@ -1,6 +1,9 @@
 ﻿using TrueSync;
 using UnityEngine;
 
+/// <summary>
+/// 输入管理
+/// </summary>
 public class SyncedInputManager : MonoBehaviour
 {
     // 移动增量
