@@ -42,6 +42,8 @@ public class SyncedPlayerController : TrueSyncBehaviour
     private SyncedInputManager _syncedInputManager;
     private SyncedHealth _syncedHealth;
 
+    private TSTransform _shotSpawnTransform;
+
     private Text _healthText;
     private AudioSource _audioSource;
 
@@ -71,6 +73,7 @@ public class SyncedPlayerController : TrueSyncBehaviour
             Debug.LogError("场景中缺失 SyncedInputManager 组件！");
         }
 
+        _shotSpawnTransform = shot.GetComponent<TSTransform>();
         _syncedHealth = GetComponent<SyncedHealth>();
 
         GameObject uiCameraObject = GameObject.Find("UICamera");
@@ -193,8 +196,8 @@ public class SyncedPlayerController : TrueSyncBehaviour
             _nextFire = _myTime + fireDelta;
 
             // 生成子弹
-            TrueSyncManager.SyncedInstantiate(shot, tsTransform.position + new TSVector(0, 0, 1.3),
-                tsTransform.rotation);
+            TrueSyncManager.SyncedInstantiate(shot, _shotSpawnTransform.position,
+                _shotSpawnTransform.rotation);
 
             _nextFire = _nextFire - _myTime;
             _myTime = 0;

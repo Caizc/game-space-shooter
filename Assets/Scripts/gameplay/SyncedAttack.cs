@@ -17,5 +17,9 @@ public class SyncedAttack : TrueSyncBehaviour
         {
             health.TakeDamage(Damage);
         }
+        else
+        {
+            TrueSyncManager.SyncedDestroy(other.gameObject);
+        }
     }
 }
