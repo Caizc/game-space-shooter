@@ -3,7 +3,7 @@
 /// </summary>
 public static class Constant
 {
-    public static string HeatBeat = "HeatBeat";
+    public static string HeartBeat = "HeartBeat";
 
     public static string UpdateShipInfo = "UpdateShipInfo";
 

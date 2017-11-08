@@ -187,7 +187,7 @@ public class Connection
             // 向 Server 发送心跳
             if (Time.time - lastTickTime > heartBeatTime)
             {
-                ProtocolBase protocol = NetMgr.Instance.GetHeatBeatProtocol();
+                ProtocolBase protocol = NetMgr.Instance.GetHeartBeatProtocol();
                 Send(protocol);
                 lastTickTime = Time.time;
             }

@@ -47,11 +47,11 @@ public class NetMgr
     }
 
     // 心跳
-    public ProtocolBase GetHeatBeatProtocol()
+    public ProtocolBase GetHeartBeatProtocol()
     {
         //具体的发送内容根据服务端设定改动
         ProtocolBytes protocol = new ProtocolBytes();
-        protocol.AddString(Constant.HeatBeat);
+        protocol.AddString(Constant.HeartBeat);
 
         return protocol;
     }
